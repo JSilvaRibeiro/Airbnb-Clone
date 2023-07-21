@@ -11,5 +11,9 @@
   "license": "ISC",
   "devDependencies": {
     "yarn": "^1.22.19"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^3.0.1"
   }
 }
