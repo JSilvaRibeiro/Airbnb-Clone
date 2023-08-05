@@ -47,8 +47,15 @@ app.post("/login", async (req, res) => {
   if (userDoc) {
     const passwordValid = bcrypt.compareSync(password, userDoc.password);
     if (passwordValid) {
-      jwt.sign({ email: userDoc.email, id: userDoc._id }, jwtSecret);
-      res.cookie("token").json("Password Validated");
+      jwt.sign(
+        { email: userDoc.email, id: userDoc._id },
+        jwtSecret,
+        {},
+        (err, token) => {
+          if (err) throw err;
+          res.cookie("token", token).json("Password Validated");
+        }
+      );
     } else {
       res.status(422).json("Password Invalid");
     }
