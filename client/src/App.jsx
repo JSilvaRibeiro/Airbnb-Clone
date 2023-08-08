@@ -12,11 +12,6 @@ axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;
 
 function App() {
-  useEffect(() => {
-    //if (!user) {
-    axios.get("/profile");
-    //}
-  }, []);
   return (
     <UserContextProvider>
       <Routes>
