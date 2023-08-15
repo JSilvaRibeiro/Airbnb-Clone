@@ -64,7 +64,7 @@ export default function PlacesPage() {
           <h2 className="text-2xl mt-4">Description</h2>
           <textarea placeholder="Description of your property" />
           <h2 className="text-2xl mt-4">Amenities</h2>
-          <div className="grid gap-2 grid-cols-2 md:grid-cols-3 lg:grid-col-6">
+          <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-3 lg:grid-col-6">
             <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
               <input type="checkbox" />
               <svg
@@ -155,6 +155,23 @@ export default function PlacesPage() {
               </svg>
               <span>Private Entrance</span>
             </label>
+          </div>
+          <h2 className="text-2xl mt-4">Extra info</h2>
+          <textarea placeholder="House Rules, etc." />
+          <h2 className="text-2xl mt-4">Check in & Check out, Max Guests</h2>
+          <div className="grid gap-2 sm:grid-cols-3">
+            <div>
+              <h3 className="mt-2 mb-2">Check in</h3>
+              <input className="border rounded-full px-2" type="date" />
+            </div>
+            <div>
+              <h3 className="mt-2 mb-2">Check out</h3>
+              <input className="border rounded-full px-2" type="date" />
+            </div>
+            <div>
+              <h3 className="mt-2 mb-2">Max guests</h3>
+              <input className="border pl-2" type="number" min="1" max="10" />
+            </div>
           </div>
         </form>
       )}
