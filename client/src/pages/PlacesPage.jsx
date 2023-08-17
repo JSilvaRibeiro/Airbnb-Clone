@@ -30,9 +30,9 @@ export default function PlacesPage() {
         headers: { "Content-type": "multipart/form-data" },
       })
       .then((response) => {
-        const { data: filename } = response;
+        const { data: filenames } = response;
         setUploadedPhotos((prev) => {
-          return [...prev, filename];
+          return [...prev, ...filenames];
         });
       });
   }
@@ -87,8 +87,18 @@ export default function PlacesPage() {
                 Add&nbsp;Photo
               </button>
             </div> */}
-            <div className="mt-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-              <label className="flex justify-center gap-1 border bg-transparent rounded-2xl p-8 text-2xl text-gray-600 cursor-pointer">
+            <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+              {uploadedPhotos.length > 0 &&
+                uploadedPhotos.map((link) => (
+                  <div className="h-32 flex" key={link}>
+                    <img
+                      className="rounded-2xl w-full object-cover"
+                      src={"http://localhost:4000/uploads/" + link}
+                      alt=""
+                    />
+                  </div>
+                ))}
+              <label className="h-32 flex items-center justify-center gap-1 border bg-transparent rounded-2xl p-2 text-2xl text-gray-600 cursor-pointer">
                 <input
                   type="file"
                   className="hidden"

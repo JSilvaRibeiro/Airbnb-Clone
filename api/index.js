@@ -8,12 +8,14 @@ const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const app = express();
 const multer = require("multer");
+const fs = require("fs");
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "aldskajf14jklh3244khkjhl";
 
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
   cors({
     credentials: true,
@@ -86,7 +88,16 @@ app.post("/logout", (req, res) => {
 
 const photosMiddleware = multer({ dest: "uploads/" });
 app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
-  res.json(req.files);
+  const uploadedFiles = [];
+  for (let i = 0; i < req.files.length; i++) {
+    const { path, originalname } = req.files[i];
+    const parts = originalname.split(".");
+    const ext = parts[parts.length - 1];
+    const newPath = path + "." + ext;
+    fs.renameSync(path, newPath);
+    uploadedFiles.push(newPath.replace("uploads/", ""));
+  }
+  res.json(uploadedFiles);
 });
 
 app.listen(4000);
