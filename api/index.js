@@ -7,6 +7,7 @@ const User = require("./models/User");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const app = express();
+const multer = require("multer");
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "aldskajf14jklh3244khkjhl";
@@ -81,6 +82,11 @@ app.get("/profile", (req, res) => {
 
 app.post("/logout", (req, res) => {
   res.cookie("token", "").json(true);
+});
+
+const photosMiddleware = multer({ dest: "uploads/" });
+app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
+  res.json(req.files);
 });
 
 app.listen(4000);
