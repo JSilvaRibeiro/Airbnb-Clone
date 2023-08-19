@@ -3,8 +3,9 @@ import { UserContext } from "../UserContext";
 import axios from "axios";
 import { Link, Navigate, useParams } from "react-router-dom";
 import PlacesPage from "./PlacesPage";
+import AccountNav from "../AccountNav";
 
-export default function AccountPage() {
+export default function ProfilePage() {
   const { ready, user, setUser } = useContext(UserContext);
   const [redirect, setRedirect] = useState(null);
 
@@ -27,15 +28,15 @@ export default function AccountPage() {
     return <Navigate to={"/login"} />;
   }
 
-  function linkClasses(type = null) {
-    let classes = "inline-flex gap-1 py-2 px-6 rounded-full";
-    if (type === subpage) {
-      classes += " bg-primary text-white";
-    } else {
-      classes += " bg-gray-300";
-    }
-    return classes;
-  }
+  // function linkClasses(type = null) {
+  //   let classes = "inline-flex gap-1 py-2 px-6 rounded-full";
+  //   if (type === subpage) {
+  //     classes += " bg-primary text-white";
+  //   } else {
+  //     classes += " bg-gray-300";
+  //   }
+  //   return classes;
+  // }
 
   if (redirect) {
     return <Navigate to={redirect} />;
@@ -43,7 +44,8 @@ export default function AccountPage() {
 
   return (
     <div>
-      <nav className="w-full flex justify-center mt-8 mb-8 gap-2">
+      <AccountNav />
+      {/* <nav className="w-full flex justify-center mt-8 mb-8 gap-2">
         <Link className={linkClasses("profile")} to={"/account"}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +97,7 @@ export default function AccountPage() {
           </svg>
           My Accommodations
         </Link>
-      </nav>
+      </nav> */}
       {subpage === "profile" && (
         <div className="text-center max-w-lg mx-auto">
           Logged in as {user.name} ({user.email})<br />
