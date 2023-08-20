@@ -1,8 +1,12 @@
 import { useState } from "react";
 import PhotosUploader from "../PhotosUploader";
 import Amentities from "../amentities";
+import AccountNav from "../AccountNav";
+import axios from "axios";
+import { Navigate, useParams } from "react-router-dom";
 
 export default function AddPlace() {
+  const { id } = useParams();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [uploadedPhotos, setUploadedPhotos] = useState([]);
@@ -12,6 +16,7 @@ export default function AddPlace() {
   const [checkIn, setCheckIn] = useState("00:00");
   const [checkOut, setCheckOut] = useState("00:00");
   const [maxGuests, setMaxGuests] = useState(1);
+  const [redirect, setRedirect] = useState(false);
 
   function inputHeader(text) {
     return <h2 className="text-2xl mt-4">{text}</h2>;
@@ -19,26 +24,27 @@ export default function AddPlace() {
 
   async function addNewPlace(ev) {
     ev.preventDefault();
-    try {
-      await axios.post("/places", {
-        title,
-        address,
-        uploadedPhotos,
-        description,
-        amentities,
-        extraInfo,
-        checkIn,
-        checkOut,
-        maxGuests,
-      });
-      //   setRedirectToPlaces(true);
-      alert("New Placed Added Succesful.");
-    } catch (e) {
-      alert("Submission failed. Please try again later.");
-    }
+    await axios.post("/places", {
+      title,
+      address,
+      uploadedPhotos,
+      description,
+      amentities,
+      extraInfo,
+      checkIn,
+      checkOut,
+      maxGuests,
+    });
+    setRedirect(true);
   }
+
+  if (redirect) {
+    return <Navigate to={"/account/places"} />;
+  }
+
   return (
     <div>
+      <AccountNav />
       <form onSubmit={addNewPlace}>
         {inputHeader("Title")}
         <input
