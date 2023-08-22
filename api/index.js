@@ -108,7 +108,7 @@ app.post("/places", async (req, res) => {
     address,
     uploadedPhotos,
     description,
-    amentities,
+    amenities,
     extraInfo,
     checkIn,
     checkOut,
@@ -122,7 +122,7 @@ app.post("/places", async (req, res) => {
       address,
       photos: uploadedPhotos,
       description,
-      amentities,
+      amenities,
       extraInfo,
       checkIn,
       checkOut,
@@ -132,12 +132,18 @@ app.post("/places", async (req, res) => {
   });
 });
 
-// app.get("/places", (req, res) => {
-//   const { token } = req.cookies;
-//   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
-//     const { id } = userData;
-//     res.json(await Place.find({ owner: id }));
-//   });
-// });
+app.get("/user-places", (req, res) => {
+  const { token } = req.cookies;
+  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+    const { id } = userData;
+    res.json(await Place.find({ owner: id }));
+  });
+});
 
+app.get("/places/:id", async (req, res) => {
+  const { id } = req.params;
+  res.json(await Place.findById(id));
+});
+
+app.put();
 app.listen(4000);

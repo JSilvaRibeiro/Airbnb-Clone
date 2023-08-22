@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PhotosUploader from "../PhotosUploader";
-import Amentities from "../amentities";
+import Amenities from "../Amenities";
 import AccountNav from "../AccountNav";
 import axios from "axios";
 import { Navigate, useParams } from "react-router-dom";
@@ -11,31 +11,69 @@ export default function AddPlace() {
   const [address, setAddress] = useState("");
   const [uploadedPhotos, setUploadedPhotos] = useState([]);
   const [description, setDescription] = useState("");
-  const [amentities, setAmentities] = useState([]);
+  const [amenities, setAmenities] = useState([]);
   const [extraInfo, setExtraInfo] = useState("");
   const [checkIn, setCheckIn] = useState("00:00");
   const [checkOut, setCheckOut] = useState("00:00");
   const [maxGuests, setMaxGuests] = useState(1);
   const [redirect, setRedirect] = useState(false);
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+    axios.get("/places/" + id).then((response) => {
+      const { data } = response;
+      setTitle(data.title);
+      setAddress(data.address);
+      setUploadedPhotos(data.photos);
+      setDescription(data.description);
+      setAmenities(data.amenities);
+      setExtraInfo(data.extraInfo);
+      setCheckIn(data.checkIn);
+      setCheckOut(data.checkOut);
+      setMaxGuests(data.maxGuests);
+    });
+  }, [id]);
 
   function inputHeader(text) {
     return <h2 className="text-2xl mt-4">{text}</h2>;
   }
 
-  async function addNewPlace(ev) {
+  async function savePlace(ev) {
     ev.preventDefault();
-    await axios.post("/places", {
+    const placeData = {
       title,
       address,
       uploadedPhotos,
       description,
-      amentities,
+      amenities,
       extraInfo,
       checkIn,
       checkOut,
       maxGuests,
-    });
-    setRedirect(true);
+    };
+    if (id) {
+      //update place
+      try {
+        await axios.put("/places", {
+          id,
+          ...placeData,
+        });
+        alert("Edit Succesful.");
+        setRedirect(true);
+      } catch (e) {
+        alert("Edit Unsuccesful. Please try again later.");
+      }
+    } else {
+      //new place
+      try {
+        await axios.post("/places", placeData);
+        alert("New Property Added.");
+        setRedirect(true);
+      } catch (e) {
+        alert("Add property failed. Please try again later.");
+      }
+    }
   }
 
   if (redirect) {
@@ -45,7 +83,7 @@ export default function AddPlace() {
   return (
     <div>
       <AccountNav />
-      <form onSubmit={addNewPlace}>
+      <form onSubmit={savePlace}>
         {inputHeader("Title")}
         <input
           type="text"
@@ -71,9 +109,9 @@ export default function AddPlace() {
           value={description}
           onChange={(ev) => setDescription(ev.target.value)}
         />
-        {inputHeader("Amentities")}
+        {inputHeader("amenities")}
         <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-          <Amentities selected={amentities} onChange={setAmentities} />
+          <Amenities selected={amenities} onChange={setAmenities} />
         </div>
         {inputHeader("Extra Info")}
         <textarea
