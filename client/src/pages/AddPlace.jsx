@@ -16,6 +16,7 @@ export default function AddPlace() {
   const [checkIn, setCheckIn] = useState("00:00");
   const [checkOut, setCheckOut] = useState("00:00");
   const [maxGuests, setMaxGuests] = useState(1);
+  const [price, setPrice] = useState(100);
   const [redirect, setRedirect] = useState(false);
   useEffect(() => {
     if (!id) {
@@ -32,6 +33,7 @@ export default function AddPlace() {
       setCheckIn(data.checkIn);
       setCheckOut(data.checkOut);
       setMaxGuests(data.maxGuests);
+      setPrice(data.price);
     });
   }, [id]);
 
@@ -51,6 +53,7 @@ export default function AddPlace() {
       checkIn,
       checkOut,
       maxGuests,
+      price,
     };
     if (id) {
       //update place
@@ -120,7 +123,7 @@ export default function AddPlace() {
           onChange={(ev) => setExtraInfo(ev.target.value)}
         />
         {inputHeader("Check in & Check out, Max Guests")}
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
           <div>
             <h3 className="mt-2 mb-1">Check in</h3>
             <input
@@ -142,12 +145,22 @@ export default function AddPlace() {
           <div>
             <h3 className="mt-2 mb-1">Max guests</h3>
             <input
-              className="border"
+              className="border rounded-full text-center"
               type="number"
               min="1"
               max="10"
               value={maxGuests}
               onChange={(ev) => setMaxGuests(Number(ev.target.value))}
+            />
+          </div>
+          <div>
+            <h3 className="mt-2 mb-1">Price per night</h3>
+            <input
+              className="border rounded-full text-center"
+              type="number"
+              min="1"
+              value={price}
+              onChange={(ev) => setPrice(Number(ev.target.value))}
             />
           </div>
         </div>
