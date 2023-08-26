@@ -1,12 +1,23 @@
 import { useState } from "react";
+import { differenceInCalendarDays } from "date-fns";
 
 export default function BookingWidget({ place }) {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [numberOfGuests, setNumberOfGuests] = useState(1);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+
+  let numberOfNights = 0;
+  if (checkIn && checkOut) {
+    numberOfNights = differenceInCalendarDays(
+      new Date(checkOut),
+      new Date(checkIn)
+    );
+  }
 
   return (
-    <div className="bg-white shadow p-4 rounded-2xl">
+    <div className="bg-white shadow-xl p-4 rounded-2xl">
       <div className="text-xl text-center">
         Price: ${place.price} / per night
       </div>
@@ -40,8 +51,27 @@ export default function BookingWidget({ place }) {
             onChange={(ev) => setNumberOfGuests(ev.target.value)}
           />
         </div>
+        {numberOfNights > 0 && (
+          <div className="py-3 px-4 border-t">
+            <label>Name:</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(ev) => setName(ev.target.value)}
+            />
+            <label>Phone number:</label>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(ev) => setPhone(ev.target.value)}
+            />
+          </div>
+        )}
       </div>
-      <button className="primary mt-4">Book this place</button>
+      <button className="primary mt-4">
+        Book this place
+        {numberOfNights > 0 && <span> ${numberOfNights * place.price}</span>}
+      </button>
     </div>
   );
 }

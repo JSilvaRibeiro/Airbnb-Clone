@@ -112,7 +112,7 @@ export default function AddPlace() {
           value={description}
           onChange={(ev) => setDescription(ev.target.value)}
         />
-        {inputHeader("amenities")}
+        {inputHeader("Amenities")}
         <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
           <Amenities selected={amenities} onChange={setAmenities} />
         </div>
