@@ -10,6 +10,7 @@ require("dotenv").config();
 const app = express();
 const multer = require("multer");
 const fs = require("fs");
+const Booking = require("./models/Booking");
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "aldskajf14jklh3244khkjhl";
@@ -88,7 +89,7 @@ app.post("/logout", (req, res) => {
 });
 
 const photosMiddleware = multer({ dest: "uploads/" });
-app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
+app.post("/api/upload", photosMiddleware.array("photos", 100), (req, res) => {
   const uploadedFiles = [];
   for (let i = 0; i < req.files.length; i++) {
     const { path, originalname } = req.files[i];
@@ -187,8 +188,24 @@ app.get("/places", async (req, res) => {
   res.json(await Place.find());
 });
 
-app.post("/booking", (req, res) => {
-  const { place, checkIn, checkOut, numberOfGuests, name, phone } = req.body;
+app.post("/bookings", (req, res) => {
+  const { place, checkIn, checkOut, numberOfGuests, name, phone, price } =
+    req.body;
+  Booking.create({
+    place,
+    checkIn,
+    checkOut,
+    numberOfGuests,
+    name,
+    phone,
+    price,
+  })
+    .then((doc) => {
+      res.json(doc);
+    })
+    .catch((err) => {
+      throw err;
+    });
 });
 
 app.listen(4000);
