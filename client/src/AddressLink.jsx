@@ -1,4 +1,4 @@
-export default function AddressLink({ address, className = null }) {
+export default function AddressLink({ children, className = null }) {
   if (!className) {
     className = "my-2";
   }
@@ -8,7 +8,7 @@ export default function AddressLink({ address, className = null }) {
     <a
       className={className}
       target="_blank"
-      href={"https://www.google.com/maps/place/" + address}
+      href={"https://www.google.com/maps/place/" + children}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +29,7 @@ export default function AddressLink({ address, className = null }) {
           d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
         />
       </svg>
-      {address}
+      {children}
     </a>
   );
 }

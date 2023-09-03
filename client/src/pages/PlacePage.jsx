@@ -23,7 +23,7 @@ export default function PlacePage() {
   return (
     <div className="mt-4 px-8 py-8 max-w-screen-lg mx-auto rounded-2xl">
       <h1 className="text-2xl">{place.title}</h1>
-      <AddressLink address={place.address} />
+      <AddressLink>{place.address}</AddressLink>
       <PlaceGallery place={place} />
       <div className="mt-8 gap-8 grid grid-cols-1 md:grid-cols-[2fr_1fr]">
         <div>
