@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-deps": "cd client && npm install && cd ../api && npm install",
+    "start-app": "concurrently \"cd client && npm run dev\" \"cd api && npx nodemon index.js\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "yarn": "^1.22.19"
   },
   "dependencies": {
